@@ -1,16 +1,20 @@
 PODS:
+  - Anchorage (4.5.0)
   - SwiftLint (0.47.0)
 
 DEPENDENCIES:
+  - Anchorage
   - SwiftLint
 
 SPEC REPOS:
   trunk:
+    - Anchorage
     - SwiftLint
 
 SPEC CHECKSUMS:
+  Anchorage: 1961bc81c84aeed54ad7ffc697c50cd9de748ba6
   SwiftLint: d41cc46a2ae58ac6d9f26954bc89f1d72e71fdef
 
-PODFILE CHECKSUM: 60e562662667d140805a843fa827a9ce6a57058e
+PODFILE CHECKSUM: 3f95c4c19e2f657ddf47a949b0fcb5f0aa7e9a02
 
 COCOAPODS: 1.11.3

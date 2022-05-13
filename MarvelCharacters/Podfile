@@ -6,6 +6,7 @@ target 'MarvelCharacters' do
   use_frameworks!
 
   # Pods for Marvel
+  pod "Anchorage"
   pod 'SwiftLint'
 
   target 'MarvelCharactersTests' do
