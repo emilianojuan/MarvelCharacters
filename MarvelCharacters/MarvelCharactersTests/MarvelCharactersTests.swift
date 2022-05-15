@@ -19,7 +19,10 @@ class MarvelCharactersTests: XCTestCase {
     }
 
     func testExample() throws {
-
+        let publicKey = String("35e7702de15c3238c6b5548323add2ca".reversed())
+        print(publicKey)
+        let privateKey = String("d706fc90ab8101a29b10e7e46c396000481ed001".reversed())
+        print(privateKey)
     }
 
     func testPerformanceExample() throws {

@@ -1,20 +1,37 @@
 PODS:
+  - Alamofire (5.5.0)
   - Anchorage (4.5.0)
+  - CryptoSwift (1.5.1)
+  - Moya (15.0.0):
+    - Moya/Core (= 15.0.0)
+  - Moya/Combine (15.0.0):
+    - Moya/Core
+  - Moya/Core (15.0.0):
+    - Alamofire (~> 5.0)
   - SwiftLint (0.47.0)
 
 DEPENDENCIES:
   - Anchorage
+  - CryptoSwift
+  - Moya
+  - Moya/Combine
   - SwiftLint
 
 SPEC REPOS:
   trunk:
+    - Alamofire
     - Anchorage
+    - CryptoSwift
+    - Moya
     - SwiftLint
 
 SPEC CHECKSUMS:
+  Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
   Anchorage: 1961bc81c84aeed54ad7ffc697c50cd9de748ba6
+  CryptoSwift: c4f2debceb38bf44c80659afe009f71e23e4a082
+  Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   SwiftLint: d41cc46a2ae58ac6d9f26954bc89f1d72e71fdef
 
-PODFILE CHECKSUM: 3f95c4c19e2f657ddf47a949b0fcb5f0aa7e9a02
+PODFILE CHECKSUM: eb0579cffbe82e098f8c6a0e3c339614553c2f0c
 
 COCOAPODS: 1.11.3
