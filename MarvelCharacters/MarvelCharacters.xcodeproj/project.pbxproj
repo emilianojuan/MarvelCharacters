@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		042D30F325BEA05BEF5DC695 /* Pods_MarvelCharactersTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55114FB72F458C773ABFA663 /* Pods_MarvelCharactersTests.framework */; };
+		0F7AF01C282F296200CB0B3B /* LoadingFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F7AF01B282F296200CB0B3B /* LoadingFooterView.swift */; };
 		0F914CCA282C8724004FCB4B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F914CC9282C8724004FCB4B /* AppDelegate.swift */; };
 		0F914CCE282C8724004FCB4B /* CharacterListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F914CCD282C8724004FCB4B /* CharacterListViewController.swift */; };
 		0F914CD3282C8725004FCB4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0F914CD2282C8725004FCB4B /* Assets.xcassets */; };
@@ -43,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0F7AF01B282F296200CB0B3B /* LoadingFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingFooterView.swift; sourceTree = "<group>"; };
 		0F914CC6282C8724004FCB4B /* MarvelCharacters.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarvelCharacters.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F914CC9282C8724004FCB4B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0F914CCD282C8724004FCB4B /* CharacterListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterListViewController.swift; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 			children = (
 				0F914CCD282C8724004FCB4B /* CharacterListViewController.swift */,
 				0FBC83B9282DCD1F00C8657A /* CharacterListCell.swift */,
+				0F7AF01B282F296200CB0B3B /* LoadingFooterView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -475,6 +478,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F7AF01C282F296200CB0B3B /* LoadingFooterView.swift in Sources */,
 				0F914CCE282C8724004FCB4B /* CharacterListViewController.swift in Sources */,
 				0FBC83B6282D6D7000C8657A /* DefaultEnvironment.swift in Sources */,
 				0F914CCA282C8724004FCB4B /* AppDelegate.swift in Sources */,
