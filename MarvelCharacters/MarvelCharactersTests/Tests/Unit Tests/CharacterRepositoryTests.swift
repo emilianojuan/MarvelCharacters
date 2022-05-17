@@ -84,7 +84,11 @@ class CharacterRepositoryTests: XCTestCase {
                                               attributionText: nil,
                                               attributionHTML: nil,
                                               etag: nil,
-                                              data: CharacterDataContainerResponse(offset: offset, limit: limit, total: 1562, count: 1, results: [])))
+                                              data: CharacterDataContainerResponse(offset: offset,
+                                                                                   limit: limit,
+                                                                                   total: 1562,
+                                                                                   count: 1,
+                                                                                   results: [])))
             .mapError { _ in
                 MarvelAPIError.apiError(MockError())
             }.eraseToAnyPublisher()

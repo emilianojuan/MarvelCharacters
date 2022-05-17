@@ -12,7 +12,9 @@ import Combine
 
 struct MockMarvelAPIClient: MarvelAPIClient {
 
-    var getCharactersCallback: (_ nameStartsWith: String?, _ limit: Int?, _ offset: Int?) -> AnyPublisher<CharacterDataWrapperResponse, MarvelAPIError>
+    var getCharactersCallback: (_ nameStartsWith: String?,
+                                _ limit: Int?,
+                                _ offset: Int?) -> AnyPublisher<CharacterDataWrapperResponse, MarvelAPIError>
 
     func getCharacters(nameStartsWith: String?, limit: Int?, offset: Int?) -> AnyPublisher<CharacterDataWrapperResponse, MarvelAPIError> {
             getCharactersCallback(nameStartsWith, limit, offset)

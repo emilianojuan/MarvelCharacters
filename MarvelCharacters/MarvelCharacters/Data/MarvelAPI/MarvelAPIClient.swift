@@ -26,7 +26,7 @@ protocol MarvelAPIClient {
 }
 
 extension MarvelAPIClient {
-    
+
     var maxPageSize: Int {
         return 100
     }

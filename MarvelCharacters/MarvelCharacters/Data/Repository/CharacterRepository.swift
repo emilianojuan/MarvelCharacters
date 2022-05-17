@@ -22,11 +22,11 @@ protocol CharacterRepository {
 }
 
 final class CharacterRepositoryImplementation: CharacterRepository {
-    
+
     var maxPageSize: Int {
         return apiClient.maxPageSize
     }
-    
+
     private let apiClient: MarvelAPIClient
 
     init(apiClient: MarvelAPIClient) {
