@@ -52,7 +52,7 @@ extension MarvelTarget: TargetType {
     }
 }
 
-struct MoyaMarvelAPIClient: MarvelAPIClient {
+final class MoyaMarvelAPIClient: MarvelAPIClient {
 
     let moyaProvider = MoyaProvider<MarvelTarget>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
 

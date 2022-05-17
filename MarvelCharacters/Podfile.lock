@@ -2,6 +2,7 @@ PODS:
   - Alamofire (5.5.0)
   - Anchorage (4.5.0)
   - CryptoSwift (1.5.1)
+  - Kingfisher (7.2.0)
   - Moya (15.0.0):
     - Moya/Core (= 15.0.0)
   - Moya/Combine (15.0.0):
@@ -13,6 +14,7 @@ PODS:
 DEPENDENCIES:
   - Anchorage
   - CryptoSwift
+  - Kingfisher
   - Moya
   - Moya/Combine
   - SwiftLint
@@ -22,6 +24,7 @@ SPEC REPOS:
     - Alamofire
     - Anchorage
     - CryptoSwift
+    - Kingfisher
     - Moya
     - SwiftLint
 
@@ -29,9 +32,10 @@ SPEC CHECKSUMS:
   Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
   Anchorage: 1961bc81c84aeed54ad7ffc697c50cd9de748ba6
   CryptoSwift: c4f2debceb38bf44c80659afe009f71e23e4a082
+  Kingfisher: 3ac0b75b155cabc0e544877d1a4deea29feece92
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   SwiftLint: d41cc46a2ae58ac6d9f26954bc89f1d72e71fdef
 
-PODFILE CHECKSUM: eb0579cffbe82e098f8c6a0e3c339614553c2f0c
+PODFILE CHECKSUM: a28f6d5c121ad0e7a6c103a0db1bf67c7d4031b4
 
 COCOAPODS: 1.11.3

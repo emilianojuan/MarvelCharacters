@@ -20,7 +20,7 @@ final class CharactersListCoordinator: Coordinator {
     }
 
     func start() {
-        let characterListViewController = CharacterListViewController()
+        let characterListViewController = CharacterListViewController(viewModel: CharacterListViewModel())
         navigationController?.pushViewController(characterListViewController, animated: true)
     }
 }

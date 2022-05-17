@@ -21,7 +21,7 @@ class CharactersResponseTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-
+        data = nil
     }
 
     func testResponseParsesCorrectly() throws {
@@ -58,7 +58,7 @@ class CharactersResponseTests: XCTestCase {
         XCTAssertEqual("3-D Man", characterResponse.name)
         XCTAssertEqual("", characterResponse.description)
         XCTAssertEqual("2014-04-29T14:18:17-0400", characterResponse.modified)
-        XCTAssertEqual("http://gateway.marvel.com/v1/public/characters/1011334", characterResponse.resourceUri)
+        XCTAssertEqual("http://gateway.marvel.com/v1/public/characters/1011334", characterResponse.resourceURI)
         XCTAssertEqual(12, characterResponse.comics?.available)
         XCTAssertEqual(3, characterResponse.series?.available)
         XCTAssertEqual(21, characterResponse.stories?.available)

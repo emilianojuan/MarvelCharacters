@@ -10,11 +10,6 @@ import Foundation
 struct MediaListResponse: Codable {
     let available: Int?
     let returned: Int?
-    let collectionUri: String?
+    let collectionURI: String?
     let items: [MediaSummaryResponse]?
-
-    enum CodingKeys: String, CodingKey {
-        case available, returned, items
-        case collectionUri = "collectionURI"
-    }
 }

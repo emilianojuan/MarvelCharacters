@@ -11,6 +11,13 @@ import CryptoSwift
 
 enum MarvelAPIError: Error {
     case apiError(Error)
+
+    var underlying: Error {
+        switch self {
+        case .apiError(let error):
+            return error
+        }
+    }
 }
 
 protocol MarvelAPIClient {
@@ -19,6 +26,10 @@ protocol MarvelAPIClient {
 }
 
 extension MarvelAPIClient {
+    
+    var maxPageSize: Int {
+        return 100
+    }
 
     static var baseURL: String {
         "https://gateway.marvel.com:443/v1/public/"

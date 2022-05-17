@@ -8,12 +8,7 @@
 import Foundation
 
 struct MediaSummaryResponse: Codable {
-    let resourceUri: String?
+    let resourceURI: String?
     let name: String?
     let type: String?
-
-    enum CodingKeys: String, CodingKey {
-        case name, type
-        case resourceUri = "resourceURI"
-    }
 }

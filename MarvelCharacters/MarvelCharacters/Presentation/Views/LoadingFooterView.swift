@@ -8,7 +8,7 @@
 import UIKit
 import Anchorage
 
-class LoadingFooterView: UICollectionReusableView {
+final class LoadingFooterView: UICollectionReusableView {
 
     let activityIndicatorView = UIActivityIndicatorView(style: .medium)
 
@@ -25,11 +25,6 @@ class LoadingFooterView: UICollectionReusableView {
         super.layoutSubviews()
         activityIndicatorView.centerAnchors == centerAnchors
         activityIndicatorView.heightAnchor == 44
-
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
 
     }
 }

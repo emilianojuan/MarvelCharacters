@@ -1,0 +1,5 @@
+disabled_rules:
+    - weak_delegate
+    - cyclomatic_complexity
+    - force_unwrapping
+    - function_body_length

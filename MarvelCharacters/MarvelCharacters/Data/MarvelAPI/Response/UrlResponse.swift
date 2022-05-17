@@ -7,7 +7,11 @@
 
 import Foundation
 
+enum UrlResponseType: String, Codable {
+    case detail, wiki, comiclink
+}
+
 struct UrlResponse: Codable {
-    let type: String?
+    let type: UrlResponseType?
     let url: String?
 }
