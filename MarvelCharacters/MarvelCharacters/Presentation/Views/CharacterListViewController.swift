@@ -7,39 +7,53 @@
 
 import UIKit
 import Anchorage
+import Combine
+import Kingfisher
 
 enum Section: Int {
     case characters
 }
 
-enum Item: Hashable {
-    case character
+extension Character: Hashable {
+
+    static func == (lhs: Character, rhs: Character) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
-class CharacterListViewController: UIViewController {
 
-    var dataSource: UICollectionViewDiffableDataSource<Section, Item>?
+final class CharacterListViewController: UIViewController {
 
-    let searchController: UISearchController
-    let charactersCollectionView: UICollectionView
+    let repository = CharacterRepositoryImplementation(apiClient: MoyaMarvelAPIClient())
 
-    init() {
+    private let searchController: UISearchController
+    private let charactersCollectionView: UICollectionView
+
+    private var dataSource: UICollectionViewDiffableDataSource<Section, Character>?
+
+    init(viewModel: CharacterListViewModel) {
         searchController = UISearchController()
         charactersCollectionView = UICollectionView(frame: .zero,
                                                     collectionViewLayout: CharacterListViewController.createLayout())
         super.init(nibName: nil, bundle: nil)
         setUpSearchController()
         setUpCharactersCollectionView()
-        setInitialData()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    var cancellable: AnyCancellable?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
-        title = "Marvel Characters"
+        navigationItem.title = "Marvel Characters"
+        loadNextPage()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -51,6 +65,7 @@ class CharacterListViewController: UIViewController {
         searchController.searchResultsUpdater = self
         searchController.searchBar.autocapitalizationType = .none
         searchController.searchBar.delegate = self
+        searchController.searchBar.searchTextField.clearButtonMode = .always
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         definesPresentationContext = true
@@ -73,15 +88,15 @@ class CharacterListViewController: UIViewController {
                                                       heightDimension: .fractionalHeight(1.0))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
-                let columnCount = layoutEnvironment.traitCollection.horizontalSizeClass.rawValue * 4
+                let columnCount = layoutEnvironment.traitCollection.horizontalSizeClass.rawValue * 3
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                        heightDimension: .fractionalWidth(CGFloat(1.0/CGFloat(columnCount))))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: columnCount)
-                group.interItemSpacing = .fixed(8)
+                group.interItemSpacing = .fixed(1)
 
                 let section = NSCollectionLayoutSection(group: group)
-                section.interGroupSpacing = 8
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 20, trailing: 16)
+                section.interGroupSpacing = 1
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
 
                 let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                               heightDimension: .estimated(44))
@@ -101,23 +116,28 @@ class CharacterListViewController: UIViewController {
         config.interSectionSpacing = 20
 
         let layout = UICollectionViewCompositionalLayout(sectionProvider: sectionProvider, configuration: config)
-
-//        layout.register(SectionBackgroundDecorationView.self, forDecorationViewOfKind: "SectionBackground")
         return layout
     }
 
-    private func createDataSource(collectionView: UICollectionView) -> UICollectionViewDiffableDataSource<Section, Item> {
+    private func createDataSource(collectionView: UICollectionView) -> UICollectionViewDiffableDataSource<Section, Character> {
 
-        let characterListCellRegistration = UICollectionView.CellRegistration<CharacterListCell, Item> { [weak self] _, _, _ in
+        let characterListCellRegistration = UICollectionView.CellRegistration<CharacterListCell, Character> { cell, _, item in
+            cell.thumbnailImageView.kf.indicatorType = .activity
+            if let urlString = item.thumbnailURL, let url = URL(string: urlString) {
+                cell.thumbnailImageView.kf.setImage(with: url,
+    //                                                placeholder: R.Image.userPlaceholder,
+                                                    options: [.transition(.fade(1)), .cacheOriginalImage])
 
+            }
+            cell.nameLabel.text = item.name
         }
 
         let footerRegistration = UICollectionView.SupplementaryRegistration<LoadingFooterView>(elementKind: "footer") { (supplementaryView, _, _) in
             supplementaryView.activityIndicatorView.startAnimating()
         }
 
-        let datasource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView,
-                                                                           cellProvider: { (collectionView, indexPath, identifier) -> UICollectionViewCell? in
+        let dataSource = UICollectionViewDiffableDataSource<Section, Character>(collectionView: collectionView,
+                                                                                        cellProvider: { (collectionView, indexPath, identifier) -> UICollectionViewCell? in
             switch Section(rawValue: indexPath.section) {
             case .characters:
                 return collectionView.dequeueConfiguredReusableCell(using: characterListCellRegistration, for: indexPath, item: identifier)
@@ -125,32 +145,38 @@ class CharacterListViewController: UIViewController {
                 fatalError("This collection view only supports one section")
             }
         })
-        datasource.supplementaryViewProvider = { (_ collectionView: UICollectionView, _ elementKind: String, _ indexPath: IndexPath) in
+        dataSource.supplementaryViewProvider = { (_ collectionView: UICollectionView, _ elementKind: String, _ indexPath: IndexPath) in
             return collectionView.dequeueConfiguredReusableSupplementary(using: footerRegistration, for: indexPath)
         }
-        return datasource
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Character>()
+        snapshot.appendSections([Section.characters])
+        dataSource.applySnapshotUsingReloadData(snapshot)
+        return dataSource
     }
 
-    private func setInitialData() {
+    private func setInitialData(_ data: [Character]) {
         // Initial data
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Character>()
         snapshot.appendSections([Section.characters])
-        let items = (1...30).map { _ in  Item.character }
-        snapshot.appendItems(items, toSection: Section.characters)
-//        snapshot.appendItems([.refresh], toSection: .refresh)
-
+        snapshot.appendItems(data, toSection: Section.characters)
         dataSource?.applySnapshotUsingReloadData(snapshot)
     }
 
+    var pageCount = 1
+    var cancel: AnyCancellable?
     private func loadNextPage() {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) { [weak self] in
-            guard var snapshot = self?.dataSource?.snapshot(for: .characters) else {
-                return
-            }
-            let items = (1...30).map { _ in  Item.character }
-            snapshot.append(items)
-            self?.dataSource?.apply(snapshot, to: .characters)
-        }
+        cancel?.cancel()
+        cancel = repository.fetchCharacters(pageNumber: pageCount, pageSize: 12*8, nameStartsWith: nil)
+            .sink(receiveCompletion: { error in
+                print(error)
+            }, receiveValue: { [weak self] response in
+                guard var snapshot = self?.dataSource?.snapshot(for: .characters) else {
+                    return
+                }
+                snapshot.append(response.characters)
+                self?.dataSource?.apply(snapshot, to: .characters)
+                self?.pageCount += 1
+            })
     }
 }
 
