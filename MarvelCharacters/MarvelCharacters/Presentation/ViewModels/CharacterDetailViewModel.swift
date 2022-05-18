@@ -9,6 +9,7 @@ import Foundation
 
 protocol CharacterDetailViewModelNavigationDelegate: AnyObject {
 
+    func close()
     func navigateToLink(url: URL)
 }
 
@@ -88,5 +89,9 @@ final class CharacterDetailViewModel {
             return
         }
         navigationDelegate?.navigateToLink(url: url)
+    }
+
+    func close() {
+        navigationDelegate?.close()
     }
 }

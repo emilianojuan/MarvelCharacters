@@ -30,17 +30,7 @@ final class CharacterListViewModel: ObservableObject {
 
 extension CharacterListViewModel {
 
-    func didSelectCharacter(identifier: Character.Identifier) {
-        guard let character = characters.first(where: { $0.id == identifier }) else {
-            return
-        }
-        navigationDelegate?.showCharacterDetails(character: character)
-    }
-
     func didSelectCharacter(character: Character) {
-//        guard let character = characters.first(where: { $0.id == identifier }) else {
-//            return
-//        }
         navigationDelegate?.showCharacterDetails(character: character)
     }
 }

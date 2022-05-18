@@ -38,8 +38,11 @@ extension CharactersListCoordinator: CharacterListViewModelNavigationDelegate {
 
 extension CharactersListCoordinator: CharacterDetailViewModelNavigationDelegate {
 
+    func close() {
+        navigationController?.dismiss(animated: true)
+    }
+
     func navigateToLink(url: URL) {
         UIApplication.shared.open(url)
     }
 }
-

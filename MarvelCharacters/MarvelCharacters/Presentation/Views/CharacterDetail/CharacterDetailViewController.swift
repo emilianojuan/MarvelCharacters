@@ -29,6 +29,10 @@ class CharacterDetailViewController: UIViewController {
         view.addSubview(characterDetailView)
         characterDetailView.edgeAnchors == view.edgeAnchors
         characterDetailView.closeButton.addTarget(self, action: #selector(close), for: .touchUpInside)
+        configureDetailView()
+    }
+
+    private func configureDetailView() {
         if let thumbnailURL = characterViewModel.thumbnailURL {
             characterDetailView.imageView.kf.setImage(with: thumbnailURL)
         }
@@ -63,7 +67,7 @@ class CharacterDetailViewController: UIViewController {
     }
 
     @objc func close(_ sender: Any) {
-        dismiss(animated: true)
+        characterViewModel.close()
     }
 
     @objc func goToDetail(_ sender: Any) {
