@@ -9,4 +9,6 @@ import Foundation
 
 struct DefaultEnvironment: Environment {
 
+    let charactersRepository: CharacterRepository
+
 }

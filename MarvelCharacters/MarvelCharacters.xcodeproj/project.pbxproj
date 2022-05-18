@@ -277,10 +277,10 @@
 		0F7AF05E283465DF00CB0B3B /* CharactersList */ = {
 			isa = PBXGroup;
 			children = (
-				0F914CCD282C8724004FCB4B /* CharacterListViewController.swift */,
-				0F581D0E28353FA7001082A2 /* CharacterListViewController+Layout.swift */,
 				0FBC83B9282DCD1F00C8657A /* CharacterListCell.swift */,
 				0F7AF01B282F296200CB0B3B /* LoadingFooterView.swift */,
+				0F914CCD282C8724004FCB4B /* CharacterListViewController.swift */,
+				0F581D0E28353FA7001082A2 /* CharacterListViewController+Layout.swift */,
 				0F581D1028354AD8001082A2 /* CharacterListViewController+DataSource.swift */,
 			);
 			path = CharactersList;
@@ -289,8 +289,8 @@
 		0F7AF05F283465F200CB0B3B /* CharacterDetail */ = {
 			isa = PBXGroup;
 			children = (
-				0F7AF04E2833691E00CB0B3B /* CharacterDetailViewController.swift */,
 				0F7AF058283383A000CB0B3B /* CharacterDetailView.swift */,
+				0F7AF04E2833691E00CB0B3B /* CharacterDetailViewController.swift */,
 			);
 			path = CharacterDetail;
 			sourceTree = "<group>";

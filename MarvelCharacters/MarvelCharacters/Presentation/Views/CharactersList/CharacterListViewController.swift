@@ -47,7 +47,8 @@ final class CharacterListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
-        navigationItem.title = characterListViewModel.title
+        navigationItem.title = NSLocalizedString("Character.List.Title", comment: "")
+        characterListViewModel.viewDidLoad()
     }
 
     private func setUpSearchController() {

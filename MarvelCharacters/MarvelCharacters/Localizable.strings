@@ -16,3 +16,5 @@
 "Character.Detail.GoToDetail" = "Details";
 "Character.Detail.GoToWiki" = "Wiki";
 "Character.Detail.GoToComics" = "Comics";
+
+"Character.List.Title" = "Marvel Characters";

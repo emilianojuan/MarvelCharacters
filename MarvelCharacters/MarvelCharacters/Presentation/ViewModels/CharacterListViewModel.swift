@@ -15,9 +15,7 @@ protocol CharacterListViewModelNavigationDelegate: AnyObject {
 
 final class CharacterListViewModel: ObservableObject {
 
-    let title = "Marvel Characters"
-
-    let repository = CharacterRepositoryImplementation(apiClient: MoyaMarvelAPIClient())
+    let characterRepository: CharacterRepository
 
     private var currentPage = 1
 
@@ -25,7 +23,16 @@ final class CharacterListViewModel: ObservableObject {
 
     private var characters: [Character] = []
 
+    init(characterRepository: CharacterRepository) {
+        self.characterRepository = characterRepository
+
+    }
+
     weak var navigationDelegate: CharacterListViewModelNavigationDelegate?
+
+    func viewDidLoad() {
+
+    }
 }
 
 extension CharacterListViewModel {

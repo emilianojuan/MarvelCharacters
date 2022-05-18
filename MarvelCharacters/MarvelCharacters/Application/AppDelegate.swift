@@ -26,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
 
     func buildDefaultEnvironment() -> Environment {
-        return DefaultEnvironment()
+        let characterRepository = CharacterRepositoryImplementation(apiClient: MoyaMarvelAPIClient())
+        return DefaultEnvironment(charactersRepository: characterRepository)
     }
 }

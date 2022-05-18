@@ -9,4 +9,6 @@ import Foundation
 
 protocol Environment {
 
+    var charactersRepository: CharacterRepository { get }
+
 }
