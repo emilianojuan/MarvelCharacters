@@ -29,15 +29,18 @@ final class CharacterListViewController: UIViewController {
 
     let repository = CharacterRepositoryImplementation(apiClient: MoyaMarvelAPIClient())
 
+    let characterListViewModel: CharacterListViewModel
+
     private let searchController: UISearchController
     private let charactersCollectionView: UICollectionView
 
     private var dataSource: UICollectionViewDiffableDataSource<Section, Character>?
 
-    init(viewModel: CharacterListViewModel) {
-        searchController = UISearchController()
-        charactersCollectionView = UICollectionView(frame: .zero,
-                                                    collectionViewLayout: CharacterListViewController.createLayout())
+    init(characterListViewModel: CharacterListViewModel) {
+        self.searchController = UISearchController()
+        self.charactersCollectionView = UICollectionView(frame: .zero,
+                                                         collectionViewLayout: CharacterListViewController.createLayout())
+        self.characterListViewModel = characterListViewModel
         super.init(nibName: nil, bundle: nil)
         setUpSearchController()
         setUpCharactersCollectionView()
@@ -96,10 +99,10 @@ final class CharacterListViewController: UIViewController {
 
                 let section = NSCollectionLayoutSection(group: group)
                 section.interGroupSpacing = 1
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
-
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 20)
+                let footerSize = layoutEnvironment.traitCollection.horizontalSizeClass == .compact ? 44.0 : 60.0
                 let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                              heightDimension: .estimated(44))
+                                                              heightDimension: .estimated(footerSize))
                 let sectionFooter = NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: headerFooterSize,
                     elementKind: "footer",
@@ -125,8 +128,8 @@ final class CharacterListViewController: UIViewController {
             cell.thumbnailImageView.kf.indicatorType = .activity
             if let urlString = item.thumbnailURL, let url = URL(string: urlString) {
                 cell.thumbnailImageView.kf.setImage(with: url,
-    //                                                placeholder: R.Image.userPlaceholder,
-                                                    options: [.transition(.fade(1)), .cacheOriginalImage])
+                                                    options: [.transition(.fade(1)),
+                                                              .cacheOriginalImage])
 
             }
             cell.nameLabel.text = item.name
@@ -145,7 +148,9 @@ final class CharacterListViewController: UIViewController {
                 fatalError("This collection view only supports one section")
             }
         })
-        dataSource.supplementaryViewProvider = { (_ collectionView: UICollectionView, _ elementKind: String, _ indexPath: IndexPath) in
+        dataSource.supplementaryViewProvider = { (_ collectionView: UICollectionView,
+                                                  _ elementKind: String,
+                                                  _ indexPath: IndexPath) in
             return collectionView.dequeueConfiguredReusableSupplementary(using: footerRegistration, for: indexPath)
         }
         var snapshot = NSDiffableDataSourceSnapshot<Section, Character>()
@@ -198,9 +203,10 @@ extension CharacterListViewController: UISearchBarDelegate {
 extension CharacterListViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let controller = UIViewController()
-        controller.view.backgroundColor = .red
-        navigationController?.present(controller, animated: true)
+        guard let character = dataSource?.itemIdentifier(for: indexPath) else {
+            return
+        }
+        characterListViewModel.didSelectCharacter(character: character)
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

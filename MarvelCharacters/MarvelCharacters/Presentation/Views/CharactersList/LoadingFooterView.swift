@@ -24,7 +24,12 @@ final class LoadingFooterView: UICollectionReusableView {
     override func layoutSubviews() {
         super.layoutSubviews()
         activityIndicatorView.centerAnchors == centerAnchors
-        activityIndicatorView.heightAnchor == 44
-
+        if traitCollection.horizontalSizeClass == .regular {
+            activityIndicatorView.style = .large
+            activityIndicatorView.heightAnchor == 200
+        } else {
+            activityIndicatorView.style = .medium
+            activityIndicatorView.heightAnchor == 44
+        }
     }
 }

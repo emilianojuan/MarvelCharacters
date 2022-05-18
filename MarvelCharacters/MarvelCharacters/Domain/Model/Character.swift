@@ -13,7 +13,7 @@ struct Character: Identifiable, Equatable {
 
     let id: Identifier
     let name: String
-    let description: String
+    let description: String?
     let detailLinkURL: String?
     let wikiLinkURL: String?
     let comicLinkURL: String?

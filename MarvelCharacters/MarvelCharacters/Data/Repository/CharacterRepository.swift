@@ -52,6 +52,6 @@ final class CharacterRepositoryImplementation: CharacterRepository {
         }.mapError { apiError in
             apiError.underlying
         }.receive(on: DispatchQueue.main)
-            .eraseToAnyPublisher()
+        .eraseToAnyPublisher()
     }
 }

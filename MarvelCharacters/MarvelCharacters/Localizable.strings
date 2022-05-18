@@ -1,0 +1,18 @@
+/* 
+  Localizable.strings
+  MarvelCharacters
+
+  Created by Emiliano Galitiello on 17/05/2022.
+  
+*/
+
+"Character.Detail.NoDescription" = "No description available";
+"Character.Detail.Close" = "Close";
+"Character.Detail.AppearsIn" = "Appears in";
+"Character.Detail.AppearsIn.Comics" = "Comics";
+"Character.Detail.AppearsIn.Series" = "Series";
+"Character.Detail.AppearsIn.Stories" = "Stories";
+"Character.Detail.AppearsIn.Events" = "Events";
+"Character.Detail.GoToDetail" = "Details";
+"Character.Detail.GoToWiki" = "Wiki";
+"Character.Detail.GoToComics" = "Comics";

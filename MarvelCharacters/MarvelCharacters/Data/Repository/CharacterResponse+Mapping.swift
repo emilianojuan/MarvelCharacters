@@ -16,7 +16,7 @@ extension CharacterResponse {
         }
         return Character(id: id ?? UUID().hashValue,
                          name: name ?? "",
-                         description: description ?? "N/A",
+                         description: description,
                          detailLinkURL: urls?.first { $0.type == UrlResponseType.detail }?.url,
                          wikiLinkURL: urls?.first { $0.type == UrlResponseType.wiki }?.url,
                          comicLinkURL: urls?.first { $0.type == UrlResponseType.comiclink }?.url,
