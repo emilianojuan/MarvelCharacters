@@ -10,6 +10,8 @@ import Anchorage
 
 final class LoadingFooterView: UICollectionReusableView {
 
+    static let elementKind = "footer-element-kind"
+
     let activityIndicatorView = UIActivityIndicatorView(style: .medium)
 
     override init(frame: CGRect) {

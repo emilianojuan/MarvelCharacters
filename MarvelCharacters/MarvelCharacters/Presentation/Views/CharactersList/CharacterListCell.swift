@@ -66,4 +66,15 @@ class CharacterListCell: UICollectionViewCell {
         let fontSize = traitCollection.horizontalSizeClass == .compact ? 14.0 : 18.0
         nameLabel.font = .boldSystemFont(ofSize: fontSize)
     }
+
+    func configure(with characterItem: Character) {
+        thumbnailImageView.kf.indicatorType = .activity
+        if let urlString = characterItem.thumbnailURL, let url = URL(string: urlString) {
+            thumbnailImageView.kf.setImage(with: url,
+                                           options: [.transition(.fade(1)),
+                                                     .cacheOriginalImage])
+
+        }
+        nameLabel.text = characterItem.name
+    }
 }
