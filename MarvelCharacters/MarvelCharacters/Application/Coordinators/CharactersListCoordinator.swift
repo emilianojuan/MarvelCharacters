@@ -19,7 +19,7 @@ final class CharactersListCoordinator: Coordinator {
     }
 
     func start() {
-        let characterListViewModel = CharacterListViewModel(characterRepository: environment.charactersRepository)
+        let characterListViewModel = CharacterListViewModel(characterListService: environment.characterListService)
         characterListViewModel.navigationDelegate = self
         let characterListViewController = CharacterListViewController(characterListViewModel: characterListViewModel)
         navigationController?.pushViewController(characterListViewController, animated: true)

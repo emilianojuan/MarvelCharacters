@@ -28,11 +28,16 @@ enum Section: Int {
         let footerSize = layoutEnvironment.traitCollection.horizontalSizeClass == .compact ? 44.0 : 60.0
         let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                       heightDimension: .estimated(footerSize))
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerFooterSize,
+            elementKind: TotalShowingHeaderView.elementKind,
+            alignment: .top)
+        sectionHeader.pinToVisibleBounds = true
         let sectionFooter = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerFooterSize,
             elementKind: LoadingFooterView.elementKind,
             alignment: .bottom)
-        section.boundarySupplementaryItems = [sectionFooter]
+        section.boundarySupplementaryItems = [sectionHeader, sectionFooter]
 
         return section
     }

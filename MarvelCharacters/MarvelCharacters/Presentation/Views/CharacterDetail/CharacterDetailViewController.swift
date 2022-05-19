@@ -53,14 +53,14 @@ class CharacterDetailViewController: UIViewController {
 
         if characterViewModel.showWikiLink {
             characterDetailView.wikiButton.isEnabled = true
-            characterDetailView.detailButton.addTarget(self, action: #selector(goToWiki), for: .touchUpInside)
+            characterDetailView.wikiButton.addTarget(self, action: #selector(goToWiki), for: .touchUpInside)
         } else {
             characterDetailView.wikiButton.isEnabled = false
         }
 
         if characterViewModel.showComicLink {
             characterDetailView.comicButton.isEnabled = true
-            characterDetailView.detailButton.addTarget(self, action: #selector(goToComic), for: .touchUpInside)
+            characterDetailView.comicButton.addTarget(self, action: #selector(goToComic), for: .touchUpInside)
         } else {
             characterDetailView.comicButton.isEnabled = false
         }

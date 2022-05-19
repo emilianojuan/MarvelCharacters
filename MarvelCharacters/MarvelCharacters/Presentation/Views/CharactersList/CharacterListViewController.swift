@@ -10,25 +10,21 @@ import Anchorage
 import Combine
 import Kingfisher
 
-extension Character: Hashable {
-
-    static func == (lhs: Character, rhs: Character) -> Bool {
-        lhs.id == rhs.id
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-}
-
 final class CharacterListViewController: UIViewController {
 
     let characterListViewModel: CharacterListViewModel
 
     private let searchController: UISearchController
-    private let charactersCollectionView: UICollectionView
 
-    private var dataSource: UICollectionViewDiffableDataSource<Section, Character>?
+    private var dataSource: UICollectionViewDiffableDataSource<Section, CharacterListItem>?
+
+    private var bindings = Set<AnyCancellable>()
+
+    let charactersCollectionView: UICollectionView
+    let activityIndicator = UIActivityIndicatorView()
+    let showingTotalLabel = UILabel()
+
+    @Published private var searchText: String?
 
     init(characterListViewModel: CharacterListViewModel) {
         self.searchController = UISearchController()
@@ -38,6 +34,32 @@ final class CharacterListViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         setUpSearchController()
         setUpCharactersCollectionView()
+
+        bindings = [
+            characterListViewModel.$isLoading.sink(receiveValue: { [weak self] loading in
+                if loading {
+                    self?.activityIndicator.startAnimating()
+                } else {
+                    self?.activityIndicator.stopAnimating()
+                }
+            }),
+            characterListViewModel.$charactersItems.sink { [weak self] characters in
+                guard var snapshot = self?.dataSource?.snapshot(for: .characters) else {
+                    return
+                }
+                snapshot.deleteAll()
+                snapshot.append(characters)
+                self?.dataSource?.apply(snapshot, to: .characters, animatingDifferences: true)
+            },
+            characterListViewModel.$showingTotalText.sink(receiveValue: { [weak self] text in
+                self?.showingTotalLabel.text = text
+            }),
+            $searchText.debounce(for: .seconds(0.3),
+                                 scheduler: RunLoop.main)
+            .sink(receiveValue: { [weak self] text in
+                self?.characterListViewModel.searchText = text
+            })
+        ]
     }
 
     required init?(coder: NSCoder) {
@@ -52,8 +74,6 @@ final class CharacterListViewController: UIViewController {
     }
 
     private func setUpSearchController() {
-        searchController.delegate = self
-        searchController.searchResultsUpdater = self
         searchController.searchBar.autocapitalizationType = .none
         searchController.searchBar.delegate = self
         searchController.searchBar.searchTextField.clearButtonMode = .always
@@ -63,7 +83,7 @@ final class CharacterListViewController: UIViewController {
     }
 
     private func setUpCharactersCollectionView() {
-        dataSource = CharacterListViewController.diffableDataSource(for: charactersCollectionView)
+        dataSource = diffableDataSource
         charactersCollectionView.dataSource = dataSource
         charactersCollectionView.delegate = self
         view.addSubview(charactersCollectionView)
@@ -71,19 +91,15 @@ final class CharacterListViewController: UIViewController {
     }
 }
 
-extension CharacterListViewController: UISearchControllerDelegate {
-
-}
-
-extension CharacterListViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-
-    }
-
-}
-
 extension CharacterListViewController: UISearchBarDelegate {
 
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.searchText = searchText
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.searchText = nil
+    }
 }
 
 extension CharacterListViewController: UICollectionViewDelegate {
@@ -92,7 +108,7 @@ extension CharacterListViewController: UICollectionViewDelegate {
         guard let character = dataSource?.itemIdentifier(for: indexPath) else {
             return
         }
-        characterListViewModel.didSelectCharacter(character: character)
+        characterListViewModel.didSelectCharacter(with: character.id)
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -100,7 +116,7 @@ extension CharacterListViewController: UICollectionViewDelegate {
         let contentHeight = scrollView.contentSize.height
         let scrollHeight = scrollView.frame.size.height
         if offsetY >= contentHeight - scrollHeight {
-            // signal bottom reached
+            characterListViewModel.loadNextPage()
         }
     }
 }

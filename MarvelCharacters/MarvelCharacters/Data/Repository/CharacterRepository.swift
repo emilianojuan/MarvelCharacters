@@ -45,10 +45,10 @@ final class CharacterRepositoryImplementation: CharacterRepository {
             guard let data = response.data,
                   let results = data.results,
                   let total = data.total else {
-                return CharactersPage(page: 0, totalPages: 0, characters: [])
+                return CharactersPage(page: 0, totalPages: 0, totalItems: 0, characters: [])
             }
             let pages = Int(ceil(Double(total) / Double(pageSize)))
-            return CharactersPage(page: pageNumber, totalPages: pages, characters: results.map { $0.character })
+            return CharactersPage(page: pageNumber, totalPages: pages, totalItems: total, characters: results.map { $0.character })
         }.mapError { apiError in
             apiError.underlying
         }.receive(on: DispatchQueue.main)

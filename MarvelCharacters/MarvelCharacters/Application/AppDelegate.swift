@@ -27,6 +27,7 @@ extension AppDelegate {
 
     func buildDefaultEnvironment() -> Environment {
         let characterRepository = CharacterRepositoryImplementation(apiClient: MoyaMarvelAPIClient())
-        return DefaultEnvironment(charactersRepository: characterRepository)
+        let characterListService = DefaultCharacterListService(characterRepository: characterRepository)
+        return DefaultEnvironment(characterListService: characterListService)
     }
 }

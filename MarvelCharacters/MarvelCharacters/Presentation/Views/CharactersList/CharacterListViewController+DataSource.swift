@@ -9,13 +9,15 @@ import UIKit
 
 extension CharacterListViewController {
 
-    typealias CellProvider = UICollectionViewDiffableDataSource<Section, Character>.CellProvider
-    typealias CellRegistration = UICollectionView.CellRegistration<CharacterListCell, Character>
-    typealias CharacterListDiffableDataSource = UICollectionViewDiffableDataSource<Section, Character>
+    typealias CellProvider = UICollectionViewDiffableDataSource<Section, CharacterListItem>.CellProvider
+    typealias CellRegistration = UICollectionView.CellRegistration<CharacterListCell, CharacterListItem>
+    typealias CharacterListDiffableDataSource = UICollectionViewDiffableDataSource<Section, CharacterListItem>
     typealias FooterRegistration = UICollectionView.SupplementaryRegistration<LoadingFooterView>
-    typealias SupplementaryViewProvider = UICollectionViewDiffableDataSource<Section, Character>.SupplementaryViewProvider
+    typealias HeaderRegistration = UICollectionView.SupplementaryRegistration<TotalShowingHeaderView>
+    typealias SupplementaryViewProvider = UICollectionViewDiffableDataSource<Section, CharacterListItem>.SupplementaryViewProvider
+    typealias DiffableSnapshot = NSDiffableDataSourceSnapshot<Section, CharacterListItem>
 
-    static func diffableDataSource(for collectionView: UICollectionView) -> CharacterListDiffableDataSource {
+    var diffableDataSource: CharacterListDiffableDataSource {
         let characterListCellRegistration = CellRegistration { cell, _, item in
             cell.configure(with: item)
         }
@@ -27,15 +29,23 @@ extension CharacterListViewController {
                 fatalError("This collection view only supports one section")
             }
         }
-        let footerRegistration = FooterRegistration(elementKind: LoadingFooterView.elementKind) { (supplementaryView, _, _) in
-            supplementaryView.activityIndicatorView.startAnimating()
+        let headerRegistration = HeaderRegistration(elementKind: TotalShowingHeaderView.elementKind) { [weak self] (headerView, _, _) in
+            headerView.showingTotalLabel = self?.showingTotalLabel
         }
-        let supplementaryViewProvider: SupplementaryViewProvider = { (collectionView, _, indexPath) in
-            return collectionView.dequeueConfiguredReusableSupplementary(using: footerRegistration, for: indexPath)
+        let footerRegistration = FooterRegistration(elementKind: LoadingFooterView.elementKind) { [weak self] (footerView, _, _) in
+            footerView.activityIndicatorView = self?.activityIndicator
         }
-        let dataSource = CharacterListDiffableDataSource(collectionView: collectionView, cellProvider: cellProvider)
+        let supplementaryViewProvider: SupplementaryViewProvider = { (collectionView, elementKind, indexPath) in
+            if elementKind == TotalShowingHeaderView.elementKind {
+                return collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: indexPath)
+            } else {
+                return collectionView.dequeueConfiguredReusableSupplementary(using: footerRegistration, for: indexPath)
+            }
+
+        }
+        let dataSource = CharacterListDiffableDataSource(collectionView: charactersCollectionView, cellProvider: cellProvider)
         dataSource.supplementaryViewProvider = supplementaryViewProvider
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Character>()
+        var snapshot = NSDiffableDataSourceSnapshot<Section, CharacterListItem>()
         snapshot.appendSections([Section.characters])
         dataSource.applySnapshotUsingReloadData(snapshot)
         return dataSource

@@ -12,11 +12,10 @@ final class LoadingFooterView: UICollectionReusableView {
 
     static let elementKind = "footer-element-kind"
 
-    let activityIndicatorView = UIActivityIndicatorView(style: .medium)
+    weak var activityIndicatorView: UIActivityIndicatorView?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(activityIndicatorView)
     }
 
     required init?(coder: NSCoder) {
@@ -25,6 +24,12 @@ final class LoadingFooterView: UICollectionReusableView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        guard let activityIndicatorView = activityIndicatorView else {
+            return
+        }
+        if !subviews.contains(activityIndicatorView) {
+            addSubview(activityIndicatorView)
+        }
         activityIndicatorView.centerAnchors == centerAnchors
         if traitCollection.horizontalSizeClass == .regular {
             activityIndicatorView.style = .large

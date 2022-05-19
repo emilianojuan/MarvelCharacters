@@ -9,6 +9,5 @@ import Foundation
 
 struct DefaultEnvironment: Environment {
 
-    let charactersRepository: CharacterRepository
-
+    let characterListService: CharacterListService
 }

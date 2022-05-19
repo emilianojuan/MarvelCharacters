@@ -67,9 +67,9 @@ class CharacterListCell: UICollectionViewCell {
         nameLabel.font = .boldSystemFont(ofSize: fontSize)
     }
 
-    func configure(with characterItem: Character) {
+    func configure(with characterItem: CharacterListItem) {
         thumbnailImageView.kf.indicatorType = .activity
-        if let urlString = characterItem.thumbnailURL, let url = URL(string: urlString) {
+        if let url = characterItem.thumbnailURL {
             thumbnailImageView.kf.setImage(with: url,
                                            options: [.transition(.fade(1)),
                                                      .cacheOriginalImage])
