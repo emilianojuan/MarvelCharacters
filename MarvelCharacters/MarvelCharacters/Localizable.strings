@@ -19,4 +19,6 @@
 
 "Character.List.Title" = "Marvel Characters";
 "Character.List.ShowingResults" = "Showing %d of %d";
+"Error.Title" = "An error has occured";
+"Error.Accept" = "Ok";
 

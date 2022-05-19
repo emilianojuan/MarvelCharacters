@@ -37,10 +37,11 @@ extension CharactersListCoordinator: CharacterListViewModelNavigationDelegate {
     }
 
     func show(_ error: Error) {
-        let alertController: UIAlertController = UIAlertController(title: "An error has occured",
+        let alertController: UIAlertController = UIAlertController(title: NSLocalizedString("Error.Title", comment: ""),
                                                                    message: error.localizedDescription,
                                                                    preferredStyle: .alert)
-        let okAction: UIAlertAction = UIAlertAction(title: "OK", style: .default) { (_) -> Void in
+        let okAction: UIAlertAction = UIAlertAction(title: NSLocalizedString("Error.Accept", comment: ""),
+                                                    style: .default) { (_) -> Void in
 
         }
         alertController.addAction(okAction)
