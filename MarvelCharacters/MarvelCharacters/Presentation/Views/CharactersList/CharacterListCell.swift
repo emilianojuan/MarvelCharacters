@@ -9,10 +9,10 @@ import UIKit
 import Anchorage
 import Kingfisher
 
-class CharacterListCell: UICollectionViewCell {
+final class CharacterListCell: UICollectionViewCell {
 
-    let thumbnailImageView = UIImageView()
-    let nameLabel = UILabel()
+    private let thumbnailImageView = UIImageView()
+    private let nameLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -46,7 +46,7 @@ class CharacterListCell: UICollectionViewCell {
         }
     }
 
-    func toggleIsHighlighted() {
+    private func toggleIsHighlighted() {
         UIView.animate(withDuration: 0.1, delay: 0, options: [.curveEaseOut], animations: {
             self.alpha = self.isHighlighted ? 0.9 : 1.0
             self.transform = self.isHighlighted ?

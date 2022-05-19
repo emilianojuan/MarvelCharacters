@@ -10,6 +10,7 @@ import Combine
 import CryptoSwift
 
 enum MarvelAPIError: Error {
+
     case apiError(Error)
 
     var underlying: Error {

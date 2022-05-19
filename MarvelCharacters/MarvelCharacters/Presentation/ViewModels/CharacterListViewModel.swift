@@ -91,6 +91,11 @@ final class CharacterListViewModel {
         self.characterListService = characterListService
     }
 
+    deinit {
+        cancelable?.cancel()
+        cancelable = nil
+    }
+
     weak var navigationDelegate: CharacterListViewModelNavigationDelegate?
 
     func viewDidLoad() {

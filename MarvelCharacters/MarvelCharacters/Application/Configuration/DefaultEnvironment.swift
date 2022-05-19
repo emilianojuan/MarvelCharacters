@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct DefaultEnvironment: Environment {
+final class DefaultEnvironment: Environment {
 
     let characterListService: CharacterListService
+
+    init(characterListService: CharacterListService) {
+        self.characterListService = characterListService
+    }
 }

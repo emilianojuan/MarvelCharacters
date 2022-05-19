@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 final class CharactersListCoordinator: Coordinator {
+
     var environment: Environment
 
     var navigationController: UINavigationController?

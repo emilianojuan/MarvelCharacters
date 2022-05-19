@@ -9,9 +9,11 @@ import UIKit
 import Anchorage
 import Kingfisher
 
-class CharacterDetailViewController: UIViewController {
+final class CharacterDetailViewController: UIViewController {
 
-    let characterViewModel: CharacterDetailViewModel
+    private let characterViewModel: CharacterDetailViewModel
+
+    private let characterDetailView = CharacterDetailView()
 
     init(characterViewModel: CharacterDetailViewModel) {
         self.characterViewModel = characterViewModel
@@ -21,8 +23,6 @@ class CharacterDetailViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    let characterDetailView = CharacterDetailView()
 
     override func viewDidLoad() {
         super.viewDidLoad()

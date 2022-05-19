@@ -12,7 +12,7 @@ import Kingfisher
 
 final class CharacterListViewController: UIViewController {
 
-    let characterListViewModel: CharacterListViewModel
+    private let characterListViewModel: CharacterListViewModel
 
     private let searchController: UISearchController
 
@@ -21,6 +21,7 @@ final class CharacterListViewController: UIViewController {
     private var bindings = Set<AnyCancellable>()
 
     let charactersCollectionView: UICollectionView
+
     let activityIndicator = UIActivityIndicatorView()
     let showingTotalLabel = UILabel()
 

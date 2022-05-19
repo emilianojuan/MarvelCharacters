@@ -54,7 +54,7 @@ extension MarvelTarget: TargetType {
 
 final class MoyaMarvelAPIClient: MarvelAPIClient {
 
-    let moyaProvider = MoyaProvider<MarvelTarget>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
+    private let moyaProvider = MoyaProvider<MarvelTarget>(plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))])
 
     func getCharacters(nameStartsWith: String?, limit: Int?, offset: Int?) -> AnyPublisher<CharacterDataWrapperResponse, MarvelAPIError> {
         return moyaProvider.requestPublisher(
