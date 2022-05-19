@@ -19,6 +19,8 @@ class CharacterRepositoryTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
+        cancelable?.cancel()
+        cancelable = nil
     }
 
     func testAPIReturnsError() throws {

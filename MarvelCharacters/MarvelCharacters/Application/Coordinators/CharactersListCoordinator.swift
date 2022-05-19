@@ -35,6 +35,19 @@ extension CharactersListCoordinator: CharacterListViewModelNavigationDelegate {
         let characterDetailViewController = CharacterDetailViewController(characterViewModel: characterDetailViewModel)
         navigationController?.present(characterDetailViewController, animated: true)
     }
+
+    func show(_ error: Error) {
+        let alertController: UIAlertController = UIAlertController(title: "An error has occured",
+                                                                   message: error.localizedDescription,
+                                                                   preferredStyle: .alert)
+        let okAction: UIAlertAction = UIAlertAction(title: "OK", style: .default) { (_) -> Void in
+
+        }
+        alertController.addAction(okAction)
+        self.navigationController?.present(alertController,
+                                           animated: true,
+                                           completion: nil)
+    }
 }
 
 extension CharactersListCoordinator: CharacterDetailViewModelNavigationDelegate {

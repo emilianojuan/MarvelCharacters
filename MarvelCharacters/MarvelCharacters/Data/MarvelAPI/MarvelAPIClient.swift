@@ -21,8 +21,10 @@ enum MarvelAPIError: Error {
     }
 }
 
+/// API Client to communicate with Marvel's service
 protocol MarvelAPIClient {
 
+    /// Get a list of characters [See Marvel's API documentation](https://developer.marvel.com/docs#!/public/getCreatorCollection_get_0)
     func getCharacters(nameStartsWith: String?, limit: Int?, offset: Int?) -> AnyPublisher<CharacterDataWrapperResponse, MarvelAPIError>
 }
 

@@ -11,6 +11,7 @@ import Combine
 protocol CharacterListViewModelNavigationDelegate: AnyObject {
 
     func showCharacterDetails(character: Character)
+    func show(_ error: Error)
 }
 
 struct CharacterListItem: Hashable {
@@ -39,13 +40,13 @@ final class CharacterListViewModel {
     typealias PageNumber = Int
     typealias TotalPages = Int
     typealias TotalItems = Int
-    typealias SearchTerm = String
+    typealias SearchText = String
 
     private static let pageSize = 96
 
     enum State {
         case listing(PageNumber, TotalPages, TotalItems)
-        case searching(PageNumber, String, TotalPages, TotalItems)
+        case searching(PageNumber, SearchText, TotalPages, TotalItems)
     }
 
     private let characterListService: CharacterListService
@@ -66,13 +67,7 @@ final class CharacterListViewModel {
     var searchText: String? {
         didSet {
             guard let searchText = searchText else {
-                listingState = previousListingState
-                guard case .listing(_, _, let total) = listingState else {
-                    return
-                }
-                charactersItems = characters.map { CharacterListItem(character: $0) }
-                updateShowingTotalText(count: characters.count, total: total)
-                charactersSearch.removeAll()
+                setNilSearch()
                 return
             }
             switch listingState {
@@ -104,10 +99,7 @@ final class CharacterListViewModel {
 
     private func loadPage(pageNumber: PageNumber, nameStartsWith: String?) {
         if let nameStartsWith = nameStartsWith, nameStartsWith.isEmpty {
-            charactersSearch.removeAll()
-            charactersItems = characterListItems(from: charactersSearch)
-            listingState = .searching(0, "", 1, 0)
-            updateShowingTotalText(count: 0, total: 0)
+            setEmptySearch()
             return
         }
         isLoading = true
@@ -115,8 +107,13 @@ final class CharacterListViewModel {
         cancelable = characterListService.fetchCharacters(pageNumber: pageNumber,
                                                           pageSize: CharacterListViewModel.pageSize,
                                                           nameStartsWith: nameStartsWith)
-        .sink(receiveCompletion: { [weak self] _ in
+        .sink(receiveCompletion: { [weak self] completion in
             self?.isLoading = false
+            switch completion {
+            case .failure(let error):
+                self?.show(error)
+            default: break
+            }
         }, receiveValue: { [weak self] receivedPage in
             self?.updateListing(page: receivedPage)
         })
@@ -125,15 +122,9 @@ final class CharacterListViewModel {
     private func updateListing(page: CharactersPage) {
         switch listingState {
         case .listing:
-            listingState = .listing(page.page, page.totalPages, page.totalItems)
-            characters.append(contentsOf: page.characters)
-            charactersItems.append(contentsOf: characterListItems(from: page.characters))
-            updateShowingTotalText(count: characters.count, total: page.totalItems)
-        case .searching(_, let searchTerm, _, _):
-            listingState = .searching(page.page, searchTerm, page.totalPages, page.totalItems)
-            charactersSearch.append(contentsOf: page.characters)
-            charactersItems = characterListItems(from: charactersSearch)
-            updateShowingTotalText(count: charactersSearch.count, total: page.totalItems)
+            updateListingState(page: page)
+        case .searching(_, let searchText, _, _):
+            updateSearchingState(page: page, searchText: searchText)
         }
     }
 
@@ -164,6 +155,41 @@ final class CharacterListViewModel {
 
     private func characterListItems(from characters: [Character]) -> [CharacterListItem] {
         return characters.map { CharacterListItem(character: $0) }
+    }
+
+    private func setNilSearch() {
+        listingState = previousListingState
+        guard case .listing(_, _, let total) = listingState else {
+            return
+        }
+        charactersItems = characters.map { CharacterListItem(character: $0) }
+        updateShowingTotalText(count: characters.count, total: total)
+        charactersSearch.removeAll()
+    }
+
+    private func setEmptySearch() {
+        charactersSearch.removeAll()
+        charactersItems = []
+        listingState = .searching(0, "", 1, 0)
+        updateShowingTotalText(count: 0, total: 0)
+    }
+
+    private func updateListingState(page: CharactersPage) {
+        listingState = .listing(page.page, page.totalPages, page.totalItems)
+        characters.append(contentsOf: page.characters)
+        charactersItems.append(contentsOf: characterListItems(from: page.characters))
+        updateShowingTotalText(count: characters.count, total: page.totalItems)
+    }
+
+    private func updateSearchingState(page: CharactersPage, searchText: String) {
+        listingState = .searching(page.page, searchText, page.totalPages, page.totalItems)
+        charactersSearch.append(contentsOf: page.characters)
+        charactersItems = characterListItems(from: charactersSearch)
+        updateShowingTotalText(count: charactersSearch.count, total: page.totalItems)
+    }
+
+    private func show(_ error: Error) {
+        navigationDelegate?.show(error)
     }
 }
 
