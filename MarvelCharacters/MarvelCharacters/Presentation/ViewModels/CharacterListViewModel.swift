@@ -14,7 +14,7 @@ protocol CharacterListViewModelNavigationDelegate: AnyObject {
     func show(_ error: Error)
 }
 
-struct CharacterListItem: Hashable {
+struct CharacterListItem: Identifiable, Hashable {
 
     let id: Int
     let name: String
@@ -41,8 +41,10 @@ final class CharacterListViewModel {
     typealias TotalPages = Int
     typealias TotalItems = Int
     typealias SearchText = String
-
-    private static let pageSize = 96
+    
+    private enum Constants {
+        static let pageSize = 96
+    }
 
     enum State {
         case listing(PageNumber, TotalPages, TotalItems)
@@ -52,17 +54,15 @@ final class CharacterListViewModel {
     private let characterListService: CharacterListService
 
     private var listingState = State.listing(0, 1, 0)
-
     private var previousListingState = State.listing(0, 1, 0)
-
     private var characters: [Character] = []
     private var charactersSearch: [Character] = []
+    private var cancelable: AnyCancellable?
+    weak var navigationDelegate: CharacterListViewModelNavigationDelegate?
 
     @Published var charactersItems: [CharacterListItem] = []
     @Published var isLoading = false
     @Published var showingTotalText: String = ""
-
-    private var cancelable: AnyCancellable?
 
     var searchText: String? {
         didSet {
@@ -91,8 +91,6 @@ final class CharacterListViewModel {
         cancelable = nil
     }
 
-    weak var navigationDelegate: CharacterListViewModelNavigationDelegate?
-
     func viewDidLoad() {
         loadNextPage()
     }
@@ -105,7 +103,7 @@ final class CharacterListViewModel {
         isLoading = true
         cancelable?.cancel()
         cancelable = characterListService.fetchCharacters(pageNumber: pageNumber,
-                                                          pageSize: CharacterListViewModel.pageSize,
+                                                          pageSize: Constants.pageSize,
                                                           nameStartsWith: nameStartsWith)
         .sink(receiveCompletion: { [weak self] completion in
             self?.isLoading = false
@@ -195,7 +193,7 @@ final class CharacterListViewModel {
 
 extension CharacterListViewModel {
 
-    func didSelectCharacter(with id: Character.ID) {
+    func didSelectCharacter(with id: CharacterListItem.ID) {
         var characters: [Character]
         switch listingState {
         case .listing:
