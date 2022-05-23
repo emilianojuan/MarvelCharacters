@@ -9,7 +9,7 @@ import UIKit
 
 protocol Coordinator: AnyObject {
 
-    var environment: Environment { get }
+    var environment: EnvironmentProtocol { get }
 
     var navigationController: UINavigationController? { get }
 

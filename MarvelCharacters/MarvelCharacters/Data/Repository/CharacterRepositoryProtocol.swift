@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-protocol CharacterRepository {
+protocol CharacterRepositoryProtocol {
 
     var maxPageSize: Int { get }
     /**
@@ -21,7 +21,7 @@ protocol CharacterRepository {
     func fetchCharacters(pageNumber: Int, pageSize: Int, nameStartsWith: String?) -> AnyPublisher<CharactersPage, Error>
 }
 
-final class CharacterRepositoryImplementation: CharacterRepository {
+final class CharacterRepository: CharacterRepositoryProtocol {
 
     var maxPageSize: Int {
         return apiClient.maxPageSize

@@ -29,7 +29,7 @@ final class CharacterListViewModel {
         static let pageSize = 96
     }
 
-    private let characterListService: CharacterListService
+    private let characterListService: CharacterListServiceProtocol
 
     private var state: CharacterListViewModel.State = .initialState {
         didSet {
@@ -49,7 +49,7 @@ final class CharacterListViewModel {
 
     @Published var showingTotalText: String = ""
 
-    init(characterListService: CharacterListService) {
+    init(characterListService: CharacterListServiceProtocol) {
         self.characterListService = characterListService
     }
 

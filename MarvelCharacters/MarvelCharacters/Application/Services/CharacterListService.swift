@@ -1,5 +1,5 @@
 //
-//  CharacterListService.swift
+//  DefaultCharacterListService.swift
 //  MarvelCharacters
 //
 //  Created by Emiliano Galitiello on 19/05/2022.
@@ -8,9 +8,15 @@
 import Foundation
 import Combine
 
-/// A service to search and list for characters.
-protocol CharacterListService {
+final class CharacterListService: CharacterListServiceProtocol {
 
-    /// See `CharacterRepository.fetchCharacters` for reference
-    func fetchCharacters(pageNumber: Int, pageSize: Int, nameStartsWith: String?) -> AnyPublisher<CharactersPage, Error>
+    private let characterRepository: CharacterRepositoryProtocol
+
+    init(characterRepository: CharacterRepositoryProtocol) {
+        self.characterRepository = characterRepository
+    }
+
+    func fetchCharacters(pageNumber: Int, pageSize: Int, nameStartsWith: String?) -> AnyPublisher<CharactersPage, Error> {
+        return characterRepository.fetchCharacters(pageNumber: pageNumber, pageSize: pageSize, nameStartsWith: nameStartsWith)
+    }
 }

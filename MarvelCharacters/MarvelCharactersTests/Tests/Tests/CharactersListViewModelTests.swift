@@ -229,7 +229,7 @@ class CharactersListViewModelTests: XCTestCase {
         charactersListViewModel.onSearchTextChanged("")
         wait(for: [fetchCharactersCallbackIsNotCalled, resultExpectation, resultShowText], timeout: 3)
     }
-    
+
     func testCancelSearch() throws {
         let mockService = MockCharacterListService()
 

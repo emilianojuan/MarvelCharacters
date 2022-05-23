@@ -10,11 +10,11 @@ import UIKit
 
 final class CharactersListCoordinator: Coordinator {
 
-    var environment: Environment
+    var environment: EnvironmentProtocol
 
     var navigationController: UINavigationController?
 
-    init(navigationController: UINavigationController, environment: Environment) {
+    init(navigationController: UINavigationController, environment: EnvironmentProtocol) {
         self.navigationController = navigationController
         self.environment = environment
     }

@@ -9,7 +9,7 @@ import UIKit
 
 final class ApplicationCoordinator: Coordinator {
 
-    var environment: Environment
+    var environment: EnvironmentProtocol
 
     var navigationController: UINavigationController?
 
@@ -17,7 +17,7 @@ final class ApplicationCoordinator: Coordinator {
 
     private let charactersListCoordinator: CharactersListCoordinator
 
-    init(window: UIWindow, environment: Environment) {
+    init(window: UIWindow, environment: EnvironmentProtocol) {
         self.environment = environment
         self.window = window
         let navigationController = UINavigationController()

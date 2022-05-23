@@ -10,7 +10,7 @@ import Combine
 
 @testable import MarvelCharacters
 
-class MockCharacterListService: CharacterListService {
+class MockCharacterListService: CharacterListServiceProtocol {
 
     var fetchCharactersCallback: ((_ pageNumber: Int, _ pageSize: Int, _ nameStartsWith: String?) -> AnyPublisher<CharactersPage, Error>)?
 

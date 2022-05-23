@@ -28,7 +28,7 @@ class CharacterRepositoryTests: XCTestCase {
         let mockApiClient = MockMarvelAPIClient { _, _, _ in
             Fail(outputType: CharacterDataWrapperResponse.self, failure: MarvelAPIError.apiError(mockError)).eraseToAnyPublisher()
         }
-        let repository = CharacterRepositoryImplementation(apiClient: mockApiClient)
+        let repository = CharacterRepository(apiClient: mockApiClient)
 
         let expect = expectation(description: "the completion closure should be called")
         let notExpect = expectation(description: "should not be called")
@@ -60,7 +60,7 @@ class CharacterRepositoryTests: XCTestCase {
                 MarvelAPIError.apiError(MockError())
             }.eraseToAnyPublisher()
         }
-        let repository = CharacterRepositoryImplementation(apiClient: mockApiClient)
+        let repository = CharacterRepository(apiClient: mockApiClient)
 
         let expectCompletion = expectation(description: "Completion gets called with finished result")
         let expectValue = expectation(description: "A value should be received")
@@ -95,7 +95,7 @@ class CharacterRepositoryTests: XCTestCase {
                 MarvelAPIError.apiError(MockError())
             }.eraseToAnyPublisher()
         }
-        let repository = CharacterRepositoryImplementation(apiClient: mockApiClient)
+        let repository = CharacterRepository(apiClient: mockApiClient)
 
         let expectCompletion = expectation(description: "Completion gets called with finished result")
         let expectValue = expectation(description: "A value should be received")
@@ -161,7 +161,7 @@ class CharacterRepositoryTests: XCTestCase {
                 MarvelAPIError.apiError(MockError())
             }.eraseToAnyPublisher()
         }
-        let repository = CharacterRepositoryImplementation(apiClient: mockApiClient)
+        let repository = CharacterRepository(apiClient: mockApiClient)
 
         let expectValue = expectation(description: "A value should be received")
         cancelable = repository.fetchCharacters(pageNumber: 1, pageSize: 96, nameStartsWith: nil).sink { _ in
