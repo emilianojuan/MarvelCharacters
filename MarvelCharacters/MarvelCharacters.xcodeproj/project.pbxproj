@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		042D30F325BEA05BEF5DC695 /* Pods_MarvelCharactersTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55114FB72F458C773ABFA663 /* Pods_MarvelCharactersTests.framework */; };
+		0F2A3683283AE34D004B9877 /* CharacterListViewModel+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F2A3682283AE34D004B9877 /* CharacterListViewModel+State.swift */; };
+		0F2A3685283AEC2A004B9877 /* CharacterListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F2A3684283AEC2A004B9877 /* CharacterListItem.swift */; };
 		0F3ED84A28359048000EDF0B /* TotalShowingHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F3ED84928359048000EDF0B /* TotalShowingHeaderView.swift */; };
 		0F3ED84D28360296000EDF0B /* CharacterListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F3ED84C28360296000EDF0B /* CharacterListService.swift */; };
 		0F3ED84F2836036D000EDF0B /* DefaultCharacterListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F3ED84E2836036D000EDF0B /* DefaultCharacterListService.swift */; };
@@ -74,6 +76,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0F2A3682283AE34D004B9877 /* CharacterListViewModel+State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterListViewModel+State.swift"; sourceTree = "<group>"; };
+		0F2A3684283AEC2A004B9877 /* CharacterListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterListItem.swift; sourceTree = "<group>"; };
 		0F3ED84928359048000EDF0B /* TotalShowingHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalShowingHeaderView.swift; sourceTree = "<group>"; };
 		0F3ED84C28360296000EDF0B /* CharacterListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterListService.swift; sourceTree = "<group>"; };
 		0F3ED84E2836036D000EDF0B /* DefaultCharacterListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCharacterListService.swift; sourceTree = "<group>"; };
@@ -234,8 +238,10 @@
 		0F7AF03D2831EDD700CB0B3B /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				0F2A3684283AEC2A004B9877 /* CharacterListItem.swift */,
 				0F7AF03E2831EE2900CB0B3B /* CharacterListViewModel.swift */,
 				0F7AF0502833696500CB0B3B /* CharacterDetailViewModel.swift */,
+				0F2A3682283AE34D004B9877 /* CharacterListViewModel+State.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -708,6 +714,7 @@
 				0FBC83B6282D6D7000C8657A /* DefaultEnvironment.swift in Sources */,
 				0F914CCA282C8724004FCB4B /* AppDelegate.swift in Sources */,
 				0F7AF0432832C5B600CB0B3B /* Character.swift in Sources */,
+				0F2A3683283AE34D004B9877 /* CharacterListViewModel+State.swift in Sources */,
 				0F581D1128354AD8001082A2 /* CharacterListViewController+DataSource.swift in Sources */,
 				0FBC83BA282DCD1F00C8657A /* CharacterListCell.swift in Sources */,
 				0F581D0F28353FA7001082A2 /* CharacterListViewController+Layout.swift in Sources */,
@@ -728,6 +735,7 @@
 				0F7AF048283306F800CB0B3B /* CharacterResponse+Mapping.swift in Sources */,
 				0F7AF04F2833691E00CB0B3B /* CharacterDetailViewController.swift in Sources */,
 				0FBC83B4282D68FC00C8657A /* CharactersListCoordinator.swift in Sources */,
+				0F2A3685283AEC2A004B9877 /* CharacterListItem.swift in Sources */,
 				0F7AF03F2831EE2900CB0B3B /* CharacterListViewModel.swift in Sources */,
 				0F3ED84A28359048000EDF0B /* TotalShowingHeaderView.swift in Sources */,
 				0F7AF0612834A93E00CB0B3B /* UIImage+Extensions.swift in Sources */,

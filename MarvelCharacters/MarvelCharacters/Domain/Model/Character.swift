@@ -26,6 +26,7 @@ struct Character: Identifiable, Equatable {
 
 struct CharactersPage: Equatable {
     let page: Int
+    let searchText: String?
     let totalPages: Int
     let totalItems: Int
     let characters: [Character]

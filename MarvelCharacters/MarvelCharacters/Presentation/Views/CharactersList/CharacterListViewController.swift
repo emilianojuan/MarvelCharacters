@@ -15,17 +15,14 @@ final class CharacterListViewController: UIViewController {
     private let characterListViewModel: CharacterListViewModel
 
     private let searchController: UISearchController
-
     private var dataSource: UICollectionViewDiffableDataSource<Section, CharacterListItem>?
-
     private var bindings = Set<AnyCancellable>()
 
     let charactersCollectionView: UICollectionView
-
     let activityIndicator = UIActivityIndicatorView()
     let showingTotalLabel = UILabel()
 
-    @Published private var searchText: String?
+    @Published private var searchText: String = ""
 
     init(characterListViewModel: CharacterListViewModel) {
         self.searchController = UISearchController()
@@ -35,7 +32,38 @@ final class CharacterListViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         setUpSearchController()
         setUpCharactersCollectionView()
+    }
 
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor.white
+        navigationItem.title = NSLocalizedString("Character.List.Title", comment: "")
+        bind()
+        characterListViewModel.onViewDidLoad()
+    }
+
+    private func setUpSearchController() {
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.delegate = self
+        searchController.searchBar.searchTextField.clearButtonMode = .always
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        definesPresentationContext = true
+    }
+
+    private func setUpCharactersCollectionView() {
+        dataSource = diffableDataSource
+        charactersCollectionView.dataSource = dataSource
+        charactersCollectionView.delegate = self
+        view.addSubview(charactersCollectionView)
+        charactersCollectionView.edgeAnchors == view.edgeAnchors
+    }
+
+    private func bind() {
         bindings = [
             characterListViewModel.$isLoading.sink(receiveValue: { [weak self] loading in
                 if loading {
@@ -57,38 +85,11 @@ final class CharacterListViewController: UIViewController {
             }),
             $searchText.debounce(for: .seconds(0.3),
                                  scheduler: RunLoop.main)
-            .sink(receiveValue: { [weak self] text in
-                self?.characterListViewModel.searchText = text
+            .dropFirst()
+            .sink(receiveValue: { [weak self] value in
+                self?.characterListViewModel.onSearchTextChanged(value)
             })
         ]
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = UIColor.white
-        navigationItem.title = NSLocalizedString("Character.List.Title", comment: "")
-        characterListViewModel.viewDidLoad()
-    }
-
-    private func setUpSearchController() {
-        searchController.searchBar.autocapitalizationType = .none
-        searchController.searchBar.delegate = self
-        searchController.searchBar.searchTextField.clearButtonMode = .always
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-        definesPresentationContext = true
-    }
-
-    private func setUpCharactersCollectionView() {
-        dataSource = diffableDataSource
-        charactersCollectionView.dataSource = dataSource
-        charactersCollectionView.delegate = self
-        view.addSubview(charactersCollectionView)
-        charactersCollectionView.edgeAnchors == view.edgeAnchors
     }
 }
 
@@ -99,7 +100,7 @@ extension CharacterListViewController: UISearchBarDelegate {
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        self.searchText = nil
+        characterListViewModel.onSearchDidCancel()
     }
 }
 
@@ -117,7 +118,7 @@ extension CharacterListViewController: UICollectionViewDelegate {
         let contentHeight = scrollView.contentSize.height
         let scrollHeight = scrollView.frame.size.height
         if offsetY >= contentHeight - scrollHeight {
-            characterListViewModel.loadNextPage()
+            characterListViewModel.onReachedPageEnd()
         }
     }
 }

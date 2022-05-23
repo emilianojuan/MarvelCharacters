@@ -29,7 +29,7 @@ final class CharactersListCoordinator: Coordinator {
 
 extension CharactersListCoordinator: CharacterListViewModelNavigationDelegate {
 
-    func showCharacterDetails(character: Character) {
+    func showDetails(for character: Character) {
         let characterDetailViewModel = CharacterDetailViewModel(character: character)
         characterDetailViewModel.navigationDelegate = self
         let characterDetailViewController = CharacterDetailViewController(characterViewModel: characterDetailViewModel)
