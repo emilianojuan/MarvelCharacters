@@ -80,9 +80,6 @@ final class CharacterListViewModel {
             cancelable?.cancel()
             state = .emptySearchState
         } else {
-            if state.searchText == nil {
-                lastListingState = state
-            }
             loadPage(pageNumber: 1, nameStartsWith: searchText)
         }
     }
@@ -109,6 +106,9 @@ final class CharacterListViewModel {
     }
 
     private func stateDidUpdate() {
+        if state.searchText == nil {
+            lastListingState = state
+        }
         isLoading = false
         charactersItems = state.characterListItems
         showingTotalText = state.resultsDescription
