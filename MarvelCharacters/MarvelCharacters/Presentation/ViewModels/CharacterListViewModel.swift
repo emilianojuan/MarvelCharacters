@@ -30,18 +30,23 @@ final class CharacterListViewModel {
     }
 
     private let characterListService: CharacterListService
+
     private var state: CharacterListViewModel.State = .initialState {
         didSet {
             stateDidUpdate()
         }
     }
+
     private var lastListingState: CharacterListViewModel.State?
+
     private var cancelable: AnyCancellable?
 
     weak var navigationDelegate: CharacterListViewModelNavigationDelegate?
 
     @Published var charactersItems: [CharacterListItem] = []
+
     @Published var isLoading = false
+
     @Published var showingTotalText: String = ""
 
     init(characterListService: CharacterListService) {

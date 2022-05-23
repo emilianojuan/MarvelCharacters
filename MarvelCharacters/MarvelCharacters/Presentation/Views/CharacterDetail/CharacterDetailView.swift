@@ -10,6 +10,18 @@ import Anchorage
 
 final class CharacterDetailView: UIView {
 
+    enum Constants {
+        static let contentViewBottomMargin: CGFloat = 24.0
+        static let closeButtonSize: CGSize = CGSize(width: 97, height: 44)
+        static let contentStackViewSpacing: CGFloat = 8.0
+        static let contentStackViewContainerEdgeInsets = EdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        static let linkButtonCornerRadius: CGFloat = 8.0
+        static let linkButtonHeight: CGFloat = 44.0
+        static let linksButtonsStackViewSpacing: CGFloat = 16
+        static let compactCloseButtonFontSize: CGFloat = 18.0
+        static let regularCloseButtonFontSize: CGFloat = 24.0
+    }
+
     private let containerStackView: UIStackView
 
     let closeButton = UIButton()
@@ -48,7 +60,7 @@ final class CharacterDetailView: UIView {
                                                                      arrangedSubviews: [.flexibleSpace(),
                                                                                         closeButton]),
                                                          containerStackView,
-                                                         .spacer(height: 24)])
+                                                         .spacer(height: Constants.contentViewBottomMargin)])
         addSubview(contentView)
         contentView.edgeAnchors == edgeAnchors
     }
@@ -68,7 +80,7 @@ final class CharacterDetailView: UIView {
         closeButton.setTitleColor(UIColor.label, for: .normal)
         closeButton.setTitleColor(UIColor.tertiaryLabel, for: .highlighted)
 
-        closeButton.sizeAnchors == CGSize(width: 97, height: 44)
+        closeButton.sizeAnchors == Constants.closeButtonSize
     }
 
     private func setUpImageView() -> UIView {
@@ -96,10 +108,10 @@ final class CharacterDetailView: UIView {
                                                               setUpFeaturesInView(),
                                                               .hairline(axis: .horizontal),
                                                               setUpLinksView()])
-        contentStackView.spacing = 8
+        contentStackView.spacing = Constants.contentStackViewSpacing
         let contentStackViewContainer = UIView()
         contentStackViewContainer.addSubview(contentStackView)
-        contentStackViewContainer.layoutMargins = EdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        contentStackViewContainer.layoutMargins = Constants.contentStackViewContainerEdgeInsets
         contentStackView.edgeAnchors == contentStackViewContainer.layoutMarginsGuide.edgeAnchors
         return contentStackViewContainer
     }
@@ -152,15 +164,15 @@ final class CharacterDetailView: UIView {
         [detailButton, wikiButton, comicButton].forEach { button in
             button.setBackgroundImage(UIImage.imageWithColor(tintColor: UIColor(named: "MarvelRed") ?? .systemRed), for: .normal)
             button.setBackgroundImage(UIImage.imageWithColor(tintColor: .secondarySystemFill), for: .disabled)
-            button.layer.cornerRadius = 8
+            button.layer.cornerRadius = Constants.linkButtonCornerRadius
             button.clipsToBounds = true
             button.tintColor = .secondaryLabel
-            button.heightAnchor == 44
+            button.heightAnchor == Constants.linkButtonHeight
         }
 
         let linksButtonsStackView = UIStackView(axis: .horizontal, arrangedSubviews: [detailButton, wikiButton, comicButton])
         linksButtonsStackView.distribution = .fillEqually
-        linksButtonsStackView.spacing = 16
+        linksButtonsStackView.spacing = Constants.linksButtonsStackViewSpacing
         return linksButtonsStackView
     }
 
@@ -168,7 +180,8 @@ final class CharacterDetailView: UIView {
         super.layoutSubviews()
         containerStackView.axis = axis(for: traitCollection.verticalSizeClass)
         let closeButtonFontSize = (traitCollection.horizontalSizeClass == .compact ||
-                                   traitCollection.verticalSizeClass == .compact) ? 18.0 : 24.0
+                                   traitCollection.verticalSizeClass == .compact) ? Constants.compactCloseButtonFontSize :
+                                                                                    Constants.regularCloseButtonFontSize
         closeButton.titleLabel?.font = .systemFont(ofSize: closeButtonFontSize, weight: .regular)
 
     }

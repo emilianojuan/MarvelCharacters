@@ -15,7 +15,7 @@ final class CharacterListViewController: UIViewController {
     private let characterListViewModel: CharacterListViewModel
 
     private let searchController: UISearchController
-    private var dataSource: UICollectionViewDiffableDataSource<Section, CharacterListItem>?
+    private var dataSource: UICollectionViewDiffableDataSource<CharactersCollectionViewSection, CharacterListItem>?
     private var bindings = Set<AnyCancellable>()
 
     let charactersCollectionView: UICollectionView

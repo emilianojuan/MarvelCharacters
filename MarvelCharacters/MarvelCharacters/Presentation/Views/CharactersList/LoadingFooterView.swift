@@ -10,6 +10,11 @@ import Anchorage
 
 final class LoadingFooterView: UICollectionReusableView {
 
+    enum Constants {
+        static let regularActivityIndicatorSize: CGFloat = 200.0
+        static let compactActivityIndicatorSize: CGFloat = 60.0
+    }
+
     static let elementKind = "footer-element-kind"
 
     weak var activityIndicatorView: UIActivityIndicatorView?
@@ -33,10 +38,10 @@ final class LoadingFooterView: UICollectionReusableView {
         activityIndicatorView.centerAnchors == centerAnchors
         if traitCollection.horizontalSizeClass == .regular {
             activityIndicatorView.style = .large
-            activityIndicatorView.heightAnchor == 200
+            activityIndicatorView.heightAnchor == Constants.regularActivityIndicatorSize
         } else {
             activityIndicatorView.style = .medium
-            activityIndicatorView.heightAnchor == 44
+            activityIndicatorView.heightAnchor == Constants.compactActivityIndicatorSize
         }
     }
 }

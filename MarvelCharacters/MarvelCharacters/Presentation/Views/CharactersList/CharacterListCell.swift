@@ -11,6 +11,15 @@ import Kingfisher
 
 final class CharacterListCell: UICollectionViewCell {
 
+    enum Constants {
+        static let nameLabelHeightAnchor: CGFloat = 30.0
+        static let isHighlightedAlpha: CGFloat = 0.9
+        static let isNotHighlightedAlpha: CGFloat = 1.0
+        static let highlightedScaling: CGFloat = 0.97
+        static let compactFontSize: CGFloat = 14.0
+        static let regularFontSize: CGFloat = 18.0
+    }
+
     private let thumbnailImageView = UIImageView()
     private let nameLabel = UILabel()
 
@@ -37,7 +46,7 @@ final class CharacterListCell: UICollectionViewCell {
         nameLabel.leadingAnchor == contentView.leadingAnchor
         nameLabel.trailingAnchor == contentView.trailingAnchor
         nameLabel.topAnchor == thumbnailImageView.bottomAnchor
-        nameLabel.heightAnchor == 30
+        nameLabel.heightAnchor == Constants.nameLabelHeightAnchor
     }
 
     override var isHighlighted: Bool {
@@ -48,9 +57,9 @@ final class CharacterListCell: UICollectionViewCell {
 
     private func toggleIsHighlighted() {
         UIView.animate(withDuration: 0.1, delay: 0, options: [.curveEaseOut], animations: {
-            self.alpha = self.isHighlighted ? 0.9 : 1.0
+            self.alpha = self.isHighlighted ? Constants.isHighlightedAlpha : Constants.isNotHighlightedAlpha
             self.transform = self.isHighlighted ?
-                CGAffineTransform.identity.scaledBy(x: 0.97, y: 0.97) :
+            CGAffineTransform.identity.scaledBy(x: Constants.highlightedScaling, y: Constants.highlightedScaling) :
                 CGAffineTransform.identity
         })
     }
@@ -63,7 +72,7 @@ final class CharacterListCell: UICollectionViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        let fontSize = traitCollection.horizontalSizeClass == .compact ? 14.0 : 18.0
+        let fontSize = traitCollection.horizontalSizeClass == .compact ? Constants.compactFontSize : Constants.regularFontSize
         nameLabel.font = .boldSystemFont(ofSize: fontSize)
     }
 

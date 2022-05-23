@@ -9,20 +9,21 @@ import UIKit
 
 extension CharacterListViewController {
 
-    typealias CellProvider = UICollectionViewDiffableDataSource<Section, CharacterListItem>.CellProvider
+    typealias CellProvider = UICollectionViewDiffableDataSource<CharactersCollectionViewSection, CharacterListItem>.CellProvider
     typealias CellRegistration = UICollectionView.CellRegistration<CharacterListCell, CharacterListItem>
-    typealias CharacterListDiffableDataSource = UICollectionViewDiffableDataSource<Section, CharacterListItem>
+    typealias CharacterListDiffableDataSource = UICollectionViewDiffableDataSource<CharactersCollectionViewSection, CharacterListItem>
     typealias FooterRegistration = UICollectionView.SupplementaryRegistration<LoadingFooterView>
     typealias HeaderRegistration = UICollectionView.SupplementaryRegistration<TotalShowingHeaderView>
-    typealias SupplementaryViewProvider = UICollectionViewDiffableDataSource<Section, CharacterListItem>.SupplementaryViewProvider
-    typealias DiffableSnapshot = NSDiffableDataSourceSnapshot<Section, CharacterListItem>
+    typealias SupplementaryViewProvider = UICollectionViewDiffableDataSource<CharactersCollectionViewSection,
+                                                                             CharacterListItem>.SupplementaryViewProvider
+    typealias DiffableSnapshot = NSDiffableDataSourceSnapshot<CharactersCollectionViewSection, CharacterListItem>
 
     var diffableDataSource: CharacterListDiffableDataSource {
         let characterListCellRegistration = CellRegistration { cell, _, item in
             cell.configure(with: item)
         }
         let cellProvider: CellProvider = { (collectionView, indexPath, identifier) -> UICollectionViewCell? in
-            switch Section(rawValue: indexPath.section) {
+            switch CharactersCollectionViewSection(rawValue: indexPath.section) {
             case .characters:
                 return collectionView.dequeueConfiguredReusableCell(using: characterListCellRegistration, for: indexPath, item: identifier)
             default:
@@ -45,8 +46,8 @@ extension CharacterListViewController {
         }
         let dataSource = CharacterListDiffableDataSource(collectionView: charactersCollectionView, cellProvider: cellProvider)
         dataSource.supplementaryViewProvider = supplementaryViewProvider
-        var snapshot = NSDiffableDataSourceSnapshot<Section, CharacterListItem>()
-        snapshot.appendSections([Section.characters])
+        var snapshot = NSDiffableDataSourceSnapshot<CharactersCollectionViewSection, CharacterListItem>()
+        snapshot.appendSections([CharactersCollectionViewSection.characters])
         dataSource.applySnapshotUsingReloadData(snapshot)
         return dataSource
     }
