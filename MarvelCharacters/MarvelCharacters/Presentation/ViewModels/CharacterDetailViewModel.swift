@@ -31,7 +31,11 @@ final class CharacterDetailViewModel {
 
     init(character: Character) {
         name = character.name
-        description = character.description
+        if let description = character.description, !description.isEmpty {
+            self.description = description
+        } else {
+            description = NSLocalizedString("Character.Detail.NoDescription", comment: "")
+        }
         if let thumbnailString = character.thumbnailURL, let url = URL(string: thumbnailString) {
             thumbnailURL = url
         } else {
