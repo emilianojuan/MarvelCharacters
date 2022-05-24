@@ -15,77 +15,77 @@ protocol CharacterDetailViewModelNavigationDelegate: AnyObject {
 
 final class CharacterDetailViewModel {
 
-    private let character: Character
-
     weak var navigationDelegate: CharacterDetailViewModelNavigationDelegate?
 
+    let name: String
+    let description: String?
+    let thumbnailURL: URL?
+    let comicsCount: String
+    let seriesCount: String
+    let storiesCount: String
+    let eventsCount: String
+
+    private let detailLinkURL: URL?
+    private let comicLinkURL: URL?
+    private let wikiLinkURL: URL?
+
     init(character: Character) {
-        self.character = character
-    }
-
-    var name: String {
-        return character.name
-    }
-
-    var description: String {
-        var characterDescription = NSLocalizedString("Character.Detail.NoDescription", comment: "")
-        if let description = character.description, !description.isEmpty {
-            characterDescription = description
+        name = character.name
+        description = character.description
+        if let thumbnailString = character.thumbnailURL, let url = URL(string: thumbnailString) {
+            thumbnailURL = url
+        } else {
+            thumbnailURL = nil
         }
-        return characterDescription
-    }
-
-    var thumbnailURL: URL? {
-        guard let urlString = character.thumbnailURL, let url = URL(string: urlString) else {
-            return nil
+        comicsCount = "\(character.comicsCount)"
+        seriesCount = "\(character.seriesCount)"
+        storiesCount = "\(character.storiesCount)"
+        eventsCount = "\(character.eventsCount)"
+        if let detailLinkString = character.detailLinkURL, let url = URL(string: detailLinkString) {
+            detailLinkURL = url
+        } else {
+            detailLinkURL = nil
         }
-        return url
-    }
-
-    var comicsCount: String {
-        "\(character.comicsCount)"
-    }
-
-    var seriesCount: String {
-        "\(character.seriesCount)"
-    }
-
-    var storiesCount: String {
-        "\(character.storiesCount)"
-    }
-
-    var eventsCount: String {
-        "\(character.eventsCount)"
+        if let comicLinkString = character.comicLinkURL, let url = URL(string: comicLinkString) {
+            comicLinkURL = url
+        } else {
+            comicLinkURL = nil
+        }
+        if let wikiLinkString = character.wikiLinkURL, let url = URL(string: wikiLinkString) {
+            wikiLinkURL = url
+        } else {
+            wikiLinkURL = nil
+        }
     }
 
     var showDetailLink: Bool {
-        return character.detailLinkURL != nil
+        return detailLinkURL != nil
     }
 
     var showWikiLink: Bool {
-        return character.wikiLinkURL != nil
+        return wikiLinkURL != nil
     }
 
     var showComicLink: Bool {
-        return character.comicLinkURL != nil
+        return comicLinkURL != nil
     }
 
     func goToDetails() {
-        guard let urlString = character.detailLinkURL, let url = URL(string: urlString) else {
+        guard let url = detailLinkURL else {
             return
         }
         navigationDelegate?.navigateToLink(url: url)
     }
 
     func goToWiki() {
-        guard let urlString = character.wikiLinkURL, let url = URL(string: urlString) else {
+        guard let url = wikiLinkURL else {
             return
         }
         navigationDelegate?.navigateToLink(url: url)
     }
 
     func goToComics() {
-        guard let urlString = character.comicLinkURL, let url = URL(string: urlString) else {
+        guard let url = comicLinkURL else {
             return
         }
         navigationDelegate?.navigateToLink(url: url)
