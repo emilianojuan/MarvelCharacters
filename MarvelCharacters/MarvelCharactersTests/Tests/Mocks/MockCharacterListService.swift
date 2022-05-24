@@ -12,7 +12,10 @@ import Combine
 
 class MockCharacterListService: CharacterListServiceProtocol {
 
-    var fetchCharactersCallback: ((_ pageNumber: Int, _ pageSize: Int, _ nameStartsWith: String?) -> AnyPublisher<CharactersPage, Error>)?
+    typealias FetchCharactersCallback = (_ pageNumber: Int,
+                                         _ pageSize: Int,
+                                         _ nameStartsWith: String?) -> AnyPublisher<CharactersPage, Error>
+    var fetchCharactersCallback: FetchCharactersCallback?
 
     func fetchCharacters(pageNumber: Int, pageSize: Int, nameStartsWith: String?) -> AnyPublisher<CharactersPage, Error> {
         fetchCharactersCallback!(pageNumber, pageSize, nameStartsWith)

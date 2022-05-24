@@ -33,6 +33,7 @@ final class CharacterDetailViewController: UIViewController {
     }
 
     private func configureDetailView() {
+        characterDetailView.accessibilityIdentifier = AccessibilityIdentifier.characterDetailView
         if let thumbnailURL = characterViewModel.thumbnailURL {
             characterDetailView.imageView.kf.setImage(with: thumbnailURL)
         }

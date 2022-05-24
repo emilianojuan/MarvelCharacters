@@ -10,6 +10,7 @@ import Combine
 
 @testable import MarvelCharacters
 
+// swiftlint:disable type_body_length
 class CharactersListViewModelTests: XCTestCase {
 
     var cancelable: AnyCancellable?
@@ -29,7 +30,7 @@ class CharactersListViewModelTests: XCTestCase {
 
     func testFirstLoading() throws {
         let mockService = MockCharacterListService()
-        mockService.fetchCharactersCallback = { pageNumber, pageSize, _ in
+        mockService.fetchCharactersCallback = { (pageNumber: Int, pageSize: Int, searchText: String?) in
             XCTAssertEqual(1, pageNumber)
             XCTAssertEqual(96, pageSize)
             let mockPage = CharactersPage(page: 1,

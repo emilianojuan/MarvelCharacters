@@ -50,6 +50,7 @@ final class CharacterListViewController: UIViewController {
         searchController.searchBar.autocapitalizationType = .none
         searchController.searchBar.delegate = self
         searchController.searchBar.searchTextField.clearButtonMode = .always
+        searchController.searchBar.searchTextField.accessibilityIdentifier = AccessibilityIdentifier.searchTextField
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         definesPresentationContext = true
@@ -94,6 +95,10 @@ final class CharacterListViewController: UIViewController {
 }
 
 extension CharacterListViewController: UISearchBarDelegate {
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.searchText = searchBar.text ?? ""
+    }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.searchText = searchText
