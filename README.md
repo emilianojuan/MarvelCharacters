@@ -16,7 +16,7 @@ The app is an universal app (iPhone and iPad), it supports portrait and landscap
 
 (there are more screenshots in the screenshots folder)
 
-## How was the app built
+## How is the app built
 
 ### UI
 
