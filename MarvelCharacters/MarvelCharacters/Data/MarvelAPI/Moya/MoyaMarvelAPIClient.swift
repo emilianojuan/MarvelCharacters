@@ -12,6 +12,7 @@ import Moya
 enum MarvelTarget {
 
     case characters(nameStartsWith: String?, limit: Int?, offset: Int?)
+
 }
 
 extension MarvelTarget: TargetType {

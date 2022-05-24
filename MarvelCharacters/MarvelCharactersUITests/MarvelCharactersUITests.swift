@@ -6,32 +6,57 @@
 //
 
 import XCTest
+@testable import MarvelCharacters
 
 class MarvelCharactersUITests: XCTestCase {
 
     override func setUpWithError() throws {
         continueAfterFailure = false
-
+        XCUIApplication().launch()
     }
 
     override func tearDownWithError() throws {
     }
 
-    func testExample() throws {
-        // UI tests must launch the application that they test.
+    /**
+        Test: Open Character Detail
+        - given: search text is "Iron Man"
+        - when: tap on first result cell
+        - then: Iron Main detail is shown
+        
+        Use keyboard shortcut COMMAND + SHIFT + K while simulator has focus on text input
+     */
+    func testOpenCharacterDetails_givenSearchIronma_whenTapOnFirstResultCell_thenCharacterDetailsViewOpensWithIronmanDetails() {
+
         let app = XCUIApplication()
-        app.launch()
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let searchText = "iron man"
+        app.searchFields[AccessibilityIdentifier.searchTextField].tap()
+        _ = app.searchFields[AccessibilityIdentifier.searchTextField].waitForExistence(timeout: 10)
+        app.searchFields[AccessibilityIdentifier.searchTextField].typeText(searchText)
+        app.buttons["search"].tap()
+        app.screenshot()
+        app.collectionViews.cells.firstMatch.tap()
 
+        XCTAssertTrue(app.otherElements[AccessibilityIdentifier.characterDetailView].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Iron Man"].waitForExistence(timeout: 5))
+        app.screenshot()
     }
 
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
+    /**
+        Test: Append second page
+        - given: the application has loaded the first page
+        - when: the user scrolls to the bottom
+        - then: a second page is appended to the results
+     */
+    func testAppendsPage_givenFirstPageLoaded_whenScrollToBottom_thenASecondPageIsAppended() {
+
+        let app = XCUIApplication()
+
+        let secondPageResultText = app.staticTexts["Showing 192 of 1562"]
+        while !secondPageResultText.exists {
+            app.swipeUp(velocity: XCUIGestureVelocity.fast)
         }
+        XCTAssertTrue(app.staticTexts["Showing 192 of 1562"].waitForExistence(timeout: 10))
     }
 }
