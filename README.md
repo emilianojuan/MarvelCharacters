@@ -30,4 +30,4 @@ The app showcases a `MVVM+C` architecture. The C stands for [Coordinator](https:
 
 ### Data
 
-The data of the characters is taking from [Marvel's API](https://developer.marvel.com)
+The data of the characters is taken from [Marvel's API](https://developer.marvel.com)
